@@ -26,8 +26,8 @@ app.use(cookieParser());
 const allowedOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
-  'https://new-frontend-vtsc.vercel.app',
-  'https://new-frontend-zo4t.vercel.app'
+  'https://new-frontend-obdh.vercel.app'
+
 ];
 
 app.use(cors({
