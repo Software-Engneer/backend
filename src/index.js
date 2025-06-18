@@ -26,6 +26,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
+  'https://new-frontend-vtsc.vercel.app',
   'https://new-frontend-zo4t.vercel.app'
 ];
 
@@ -35,9 +36,11 @@ app.use(cors({
     if (!origin) return callback(null, true);
     
     if (allowedOrigins.indexOf(origin) === -1) {
+      console.log('Blocked by CORS:', origin);
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
       return callback(new Error(msg), false);
     }
+    console.log('Allowed by CORS:', origin);
     return callback(null, true);
   },
   credentials: true,
