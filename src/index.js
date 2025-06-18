@@ -28,12 +28,38 @@ app.use(cors({
 app.use(helmet());
 app.use(morgan('dev'));
 
-// Public routes
-app.use('/api/auth', authRoutes);
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the API',
+    version: '1.0.0',
+    status: 'active',
+    endpoints: {
+      auth: '/api/auth',
+      users: '/api/users',
+      products: '/api/products'
+    }
+  });
+});
 
-// Protected routes
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
+
+// API routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', authenticateToken, authorizeRole(['admin']), userRoutes);
 app.use('/api/products', authenticateToken, productRoutes);
+
+// Handle undefined routes
+app.use((req, res, next) => {
+  res.status(404).json({
+    error: 'Not Found',
+    message: `Cannot ${req.method} ${req.originalUrl}`,
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Error handling
 app.use(errorHandler);
